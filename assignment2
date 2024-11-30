@@ -1,0 +1,138 @@
+package experiment;
+
+import java.util.Objects;
+
+public class Customer {
+
+    private int id;
+    private double balance;
+    private String firstName;
+    private String lastName;
+
+    // Constructor
+    public Customer(int id, double balance, String firstName, String lastName) {
+        this.id = id;
+        this.balance = balance;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    // Overriding equals and hashcode for equality checking
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return id == customer.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", balance=" + balance +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
+}
+
+
+
+
+package experiment;
+
+import java.util.Comparator;
+
+public class CustomerComparator implements Comparator<Customer> {
+
+    @Override
+    public int compare(Customer c1, Customer c2) {
+        // First Name comparison
+        int firstNameCompare = c1.getFirstName().compareTo(c2.getFirstName());
+        if (firstNameCompare != 0) {
+            return firstNameCompare;
+        }
+
+        // Last Name comparison
+        int lastNameCompare = c1.getLastName().compareTo(c2.getLastName());
+        if (lastNameCompare != 0) {
+            return lastNameCompare;
+        }
+
+        // ID comparison
+        int idCompare = Integer.compare(c1.getId(), c2.getId());
+        if (idCompare != 0) {
+            return idCompare;
+        }
+
+        // Balance comparison
+        return Double.compare(c1.getBalance(), c2.getBalance());
+    }
+}
+
+
+package experiment;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class CustomerApp {
+
+    public static void main(String[] args) {
+        // Creating a list of customers
+        List<Customer> customers = new ArrayList<>();
+        customers.add(new Customer(1, 2000.50, "John", "Doe"));
+        customers.add(new Customer(2, 1500.75, "Alice", "Smith"));
+        customers.add(new Customer(3, 2000.50, "John", "Smith"));
+        customers.add(new Customer(4, 1000.30, "Bob", "Johnson"));
+        customers.add(new Customer(5, 1200.45, "Alice", "Doe"));
+
+        // Sorting the customers based on First Name, Last Name, ID, and Balance
+        Collections.sort(customers, new CustomerComparator());
+
+        // Printing the sorted list of customers
+        for (Customer customer : customers) {
+            System.out.println(customer);
+        }
+    }
+}
